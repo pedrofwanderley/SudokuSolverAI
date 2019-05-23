@@ -104,11 +104,19 @@ def eliminate_peer_in_a_string(missing, allocated):
 
 # Eliminate a possible element position already in the board (can be a row string or a column string)
 def eliminate_peer(board, rows, cols, empty_positions):
+	#eliminate possibles elements by rows
 	for position in empty_positions:
 		row_missing = position[0]
 		missing_elements = board[position]
 		allocated_elements_row = row_to_string(board, row_missing, cols)
 		board[position] = eliminate_peer_in_a_string(missing_elements, allocated_elements_row)
+
+	#eliminate possibles elements by columns
+	for position in empty_positions:
+		col_missing = position[1]
+		missing_elements = board[position]
+		allocated_elements_col = col_to_string(board, col_missing, rows)
+		board[position] = eliminate_peer_in_a_string(missing_elements, allocated_elements_col)
 
 eliminate_peer(board,rows,cols, empty_positions)
 print(board)
