@@ -23,3 +23,12 @@ def find_only_choice_block(board, selected_rows, selected_cols):
 	for i in range(len(elements_left)):
 		if(is_unique(elements_left, i)):
 			board[elements_left_posicion[i]] = elements_left[i]
+
+			
+# Eliminates a possible element position that is already in a row or column
+def all_only_choices(board, block_rows, block_cols):
+	for r in block_rows:
+		for c in block_cols:
+			block_only_choices(board,r,c)
+
+	return board
