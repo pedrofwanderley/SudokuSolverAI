@@ -1,7 +1,7 @@
 #String representation
+
 #Super Easy Boards
 #se = super easy
-
 board_se_01 = '67...15.92...9..149.1.3.2.7..7..48...62.7839.58.2..476.2..4.165.56.8.943.943...28'
 board_se_02 = '.2.935..8.8627.5..935.461.77.1.6.28.358.......6.518.7987.6.2..1..91..7..512.9..36'
 board_se_03 = '23...176.....8.43.1.65...9.3276.9.8.581.3..2..9.1283..9.2317.4....86527....942613'
@@ -12,15 +12,26 @@ cols = '123456789'
 block_rows = ['ABC', 'DEF', 'GHI']
 block_cols = ['123', '456', '789']
 
+# Helper function - creates block string from string representation
+def board_string_vizualization(board_string):
+	string = ''
+	count = 0
+	for element in board_string:
+		string += element + ' '
+		count += 1
+		if (count == 9) :
+			string += '\n'
+			count = 0
+
+	return string
+
+
 # Helper function - creates dictionary from string representation
 def create_dict_representation(board, rows, cols):
     possible_comb = [r+c for r in rows for c in cols]
     map_board = {p:b for b, p in zip(board, possible_comb)}
     return map_board
 
-#The board used to delevolp the code as test (board_se_02)
-dict_board = create_dict_representation(board_se_02, rows, cols)
-board = dict_board
 
 # Helper function - Make a string with the missing elements of a block
 def missing_elements(selected_rows, selected_cols):
@@ -46,9 +57,6 @@ def fill_all_dot_cells(board, block_rows, block_cols):
 		for c in block_cols:
 			fill_block_dot_cells(board,r,c)
 
-fill_all_dot_cells(board,block_rows, block_cols)
-#print(board)
-#print('\n\n\n')
 
 # Helper function - Make an array with the missing elements positions
 def empty_positions(board, rows, cols):
@@ -130,8 +138,28 @@ def elimination_technique(board, rows, cols):
 
 	return board_updated
 
-# To see the final elimination technique result for the board_se_02
+#To see the elimination technique flow with the board_se_01
+board = create_dict_representation(board_se_01, rows, cols)
+
+print(board_string_vizualization(board_se_01))
+
+fill_all_dot_cells(board,block_rows, block_cols)
+
 print(board_to_string(board,rows,cols))
+
 board_updated = elimination_technique(board, rows, cols)
 print(board_to_string(board_updated, rows, cols))
 
+print('\n>> ---------------------------------- << \n')
+
+#To see the elimination technique flow with the board_se_02
+board = create_dict_representation(board_se_02, rows, cols)
+
+print(board_string_vizualization(board_se_02))
+
+fill_all_dot_cells(board,block_rows, block_cols)
+
+print(board_to_string(board,rows,cols))
+
+board_updated = elimination_technique(board, rows, cols)
+print(board_to_string(board_updated, rows, cols))
