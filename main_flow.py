@@ -41,17 +41,20 @@ def board_to_string(board, rows, cols):
 
 	return string
 
-#To see the elimination technique flow with the board_se_01
+def level_resolution(board_list, level):
+	for b in board_list:
+		print(board_string_vizualization(b))
+		board = create_dict_representation(b, rows, cols)
+		elimination.fill_all_dot_cells(board, block_rows, block_cols)
+		print(board_to_string(board,rows,cols))
+		
+		if (level == 'SE' or level == 'E'): 
+			board_updated = elimination.elimination_technique(board, rows, cols)
+			print(board_to_string(board_updated, rows, cols))
+		
+		print('\n>> ---------------------------------- << \n')
 
-print(board_string_vizualization(grids.board_se_01))
 
-board = create_dict_representation(grids.board_se_01, rows, cols)
-
-elimination.fill_all_dot_cells(board, block_rows, block_cols)
-
-print(board_to_string(board,rows,cols))
-
-board_updated = elimination.elimination_technique(board, rows, cols)
-print(board_to_string(board_updated, rows, cols))
-
-print('\n>> ---------------------------------- << \n')
+#To see the elimination technique flow with the Super Easy Boards
+level_resolution(grids.super_easy_boards, 'SE')
+level_resolution(grids.easy_boards, 'E')
