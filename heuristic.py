@@ -172,7 +172,7 @@ def eliminate_peer(board, rows, cols, empty_positions_list):
 	#Eliminates possibles elements by rows
 	valuesof = []
 	valuesof2 = []
-	valuesof = ordenaLista(empty_positions_list)
+	valuesof = sortList(empty_positions_list)
 
 	for position in valuesof:
 		row_missing = position[0]
@@ -182,7 +182,7 @@ def eliminate_peer(board, rows, cols, empty_positions_list):
 
 
 	updated_empty_positions_list = empty_positions(board, rows, cols)
-	valuesof2 = ordenaLista(updated_empty_positions_list)
+	valuesof2 = sortList(updated_empty_positions_list)
 	#Eliminates possibles elements by columns
 	for position in valuesof2:
 		col_missing = position[1]
@@ -196,12 +196,12 @@ def eliminate_peer(board, rows, cols, empty_positions_list):
 def elimination_technique(board, rows, cols):
 	valuesof = []
 	empty_positions_list = empty_positions(board,rows, cols)
-	valuesof = ordenaLista(empty_positions_list)
+	valuesof = sortList(empty_positions_list)
 	while(len(valuesof) > 0):
 		print(board_to_string(board,rows,cols))
 		board_updated = eliminate_peer(board,rows,cols,valuesof)
 		empty_positions_list = empty_positions(board_updated,rows, cols)
-		valuesof = ordenaLista(empty_positions_list)
+		valuesof = sortList(empty_positions_list)
 
 
 	return board_updated
