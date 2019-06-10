@@ -7,6 +7,7 @@ rows = 'ABCDEFGHI'
 cols = '123456789'
 block_rows = ['ABC', 'DEF', 'GHI']
 block_cols = ['123', '456', '789']
+elements_string = '123456789'
 
 # Helper function - creates block string from string representation
 def board_string_vizualization(board_string):
@@ -45,50 +46,54 @@ def level_resolution(boards_list, level):
 	for b in boards_list:
 		print(board_string_vizualization(b))
 		board = create_dict_representation(b, rows, cols)
-		elimination.fill_all_dot_cells(board, block_rows, block_cols)
+		elimination.fill_all_dot_cells(board,rows, cols, elements_string)
 		print(board_to_string(board,rows,cols))
 		
 		if (level == 'SE'): 
-			board_updated = elimination.elimination_technique(board, rows, cols)
+			board_updated = elimination.elimination_technique(board, rows, cols, block_rows, block_cols)
 			print(board_to_string(board_updated, rows, cols))
 		if (level == 'E'): 
-			board_updated = elimination.elimination_technique(board, rows, cols)
+			board_updated = elimination.elimination_technique(board, rows, cols, block_rows, block_cols)
+			print(board_to_string(board_updated, rows, cols))
+		if (level == 'M'): 
+			board_updated = elimination.elimination_technique(board, rows, cols, block_rows, block_cols)
+			print(board_to_string(board_updated, rows, cols))
 		print('\n>> ---------------------------------- << \n')
 
-def only_choice_test(b):
-	print(board_string_vizualization(b))
-	board = create_dict_representation(b, rows, cols)
-	elimination.fill_all_dot_cells(board, block_rows, block_cols)
-	print(board_to_string(board,rows,cols))
+# def only_choice_test(b):
+# 	print(board_string_vizualization(b))
+# 	board = create_dict_representation(b, rows, cols)
+# 	elimination.fill_all_dot_cells(board, block_rows, block_cols)
+# 	print(board_to_string(board,rows,cols))
 
-	count = 0
-	empty_positions_list = elimination.empty_positions(board,rows, cols)
-	while(count <= 20):
-		board_updated = elimination.eliminate_peer(board,rows,cols,empty_positions_list)
-		empty_positions_list = elimination.empty_positions(board_updated,rows, cols)
-		count += 1
+# 	count = 0
+# 	empty_positions_list = elimination.empty_positions(board,rows, cols)
+# 	while(count <= 20):
+# 		board_updated = elimination.eliminate_peer(board,rows,cols,empty_positions_list)
+# 		empty_positions_list = elimination.empty_positions(board_updated,rows, cols)
+# 		count += 1
 	
-	print(board_to_string(board_updated,rows,cols))
-	print(check_solution(board_updated, rows, cols))
+# 	print(board_to_string(board_updated,rows,cols))
+# 	print(check_solution(board_updated, rows, cols))
 	
-	if(check_solution(board_updated, rows, cols) == False):
-		count = 0
-		while(count <= 2):
-			only_choice.update_all_missing_elements(board, block_rows, block_cols)
-			count += 1
-	print(check_solution(board_updated, rows, cols))
+# 	if(check_solution(board_updated, rows, cols) == False):
+# 		count = 0
+# 		while(count <= 2):
+# 			only_choice.update_all_missing_elements(board, block_rows, block_cols)
+# 			count += 1
+# 	print(check_solution(board_updated, rows, cols))
 
-	if(check_solution(board_updated, rows, cols) == False):
-		count = 0
-		empty_positions_list = elimination.empty_positions(board,rows, cols)
-		while(count <= 20):
-			board_updated = elimination.eliminate_peer(board,rows,cols,empty_positions_list)
-			empty_positions_list = elimination.empty_positions(board_updated,rows, cols)
-			count += 1
+# 	if(check_solution(board_updated, rows, cols) == False):
+# 		count = 0
+# 		empty_positions_list = elimination.empty_positions(board,rows, cols)
+# 		while(count <= 20):
+# 			board_updated = elimination.eliminate_peer(board,rows,cols,empty_positions_list)
+# 			empty_positions_list = elimination.empty_positions(board_updated,rows, cols)
+# 			count += 1
 		
-	print(board_to_string(board_updated,rows,cols))
+# 	print(board_to_string(board_updated,rows,cols))
 	
-	print('\n>> ---------------------------------- << \n')
+# 	print('\n>> ---------------------------------- << \n')
 	
 # Helper function - Returns an boolean value, True if all positions have only one value alocated and False otherwise
 def check_solution(board, rows, cols):
@@ -103,7 +108,6 @@ def check_solution(board, rows, cols):
 #To see the elimination technique flow with the Super Easy Boards
 level_resolution(grids.super_easy_boards, 'SE')
 level_resolution(grids.easy_boards, 'E')
+level_resolution(grids.medium_boards, 'M')
 
-
-
-only_choice_test(grids.board_e_05)
+#only_choice_test(grids.board_e_05)

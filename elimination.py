@@ -1,28 +1,13 @@
 # This file has the implementation for all the functions that compose the Elimination Technique
 
-# Helper function - Make a string with the missing elements of a block
-def missing_elements(board, selected_rows, selected_cols):
-	missing_elements = '123456789'
-	positions = [r+c for r in selected_rows for c in selected_cols]
-	for position in positions:
-		if (board[position] in '123456789'):
-			missing_elements = missing_elements.replace(board[position], '')
-
-	return missing_elements	
-
-
-# Helper function - fills the cells of a block that are with a dot for the possibles elements left
-def fill_block_dot_cells(board, selected_rows, selected_cols):
-	positions = [r+c for r in selected_rows for c in selected_cols]
-	for position in positions:
-		if board[position] == '.':
-			board[position] = missing_elements(board, selected_rows, selected_cols)
+import helpers
 
 # Helper function - fills all the cells that are with dot for the possibles elements left in the block
-def fill_all_dot_cells(board, block_rows, block_cols):
-	for r in block_rows:
-		for c in block_cols:
-			fill_block_dot_cells(board,r,c)
+def fill_all_dot_cells(board, rows, cols, elements_string):
+	positions = [r+c for r in rows for c in cols]
+	for position in positions:
+		if board[position] == '.':
+			board[position] = elements_string
 
 
 # Helper function - Make an array with the missing elements positions
@@ -82,12 +67,45 @@ def eliminate_peer(board, rows, cols, empty_positions_list):
 
 	return board
 
+# Helper function - Make a string with the already allocated elements of a block
+def allocated_elements(board, selected_rows, selected_cols):
+	allocated_elements = ''
+	positions = [r+c for r in selected_rows for c in selected_cols]
+	for position in positions:
+		if(len(board[position]) == 1):
+			allocated_elements += board[position]
+
+	return allocated_elements	
+
+
+# Helper function - update the positions with more than one value with the new allocated elements
+def update_missing_elements_block(board, selected_rows, selected_cols):
+	block_elements = allocated_elements(board, selected_rows, selected_cols)
+	positions = [r+c for r in selected_rows for c in selected_cols]
+	for position in positions:
+		if (len(board[position]) > 1):
+			for element in board[position]:
+				if (element in block_elements):
+					board[position] = board[position].replace(element, '')
+
+# Helper function - update all grid positions with more than one value after the elimination technique
+def update_all_missing_elements(board, block_rows, block_cols):
+	for r in block_rows:
+		for c in block_cols:
+			update_missing_elements_block(board,r,c)
+
 # Makes a loop to eliminate all the redundant elements in the grid
-def elimination_technique(board, rows, cols):
+def elimination_technique(board, rows, cols, block_rows, block_cols):
 	empty_positions_list = empty_positions(board,rows, cols)
-	while(len(empty_positions_list) > 0):
-		board_updated = eliminate_peer(board,rows,cols,empty_positions_list)
-		empty_positions_list = empty_positions(board_updated,rows, cols)
+	count = 0
+	while(helpers.check_solution(board, rows, cols) == False):
+		if count > 20 :
+			break
+		else:
+			board_updated = eliminate_peer(board,rows,cols,empty_positions_list)
+			update_all_missing_elements(board_updated, block_rows, block_cols)
+			empty_positions_list = empty_positions(board_updated,rows, cols)
+			count += 1
 
 	return board_updated
 
