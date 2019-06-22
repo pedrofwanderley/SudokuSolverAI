@@ -148,15 +148,22 @@ def col_to_string(board, col, rows):
 
 # Creates a string representation with rows and columns for the board
 def board_to_string(board, rows, cols):
-	string = ''
+	string = '------|-------|--------\n'
 	positions = [r+c for r in rows for c in cols]
 	count = 0
+	count2 = 0
 	for position in positions:
-		string += board[position] + ' '
 		count += 1
+		if (count % 3 != 0):
+			string += board[position] + ' '
+		else:
+			string += board[position] + " | "
 		if (count == 9) :
 			string += '\n'
 			count = 0
+			count2 += 1
+			if (count2 % 3 == 0):
+				string += "------|-------|--------\n"
 	return string
 
 # Eliminates a possible element position that is already in a string (can be a row string or a column string)
