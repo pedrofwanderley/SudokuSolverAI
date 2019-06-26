@@ -122,7 +122,7 @@ def compareSolutionsTimes(func1, func2):
 
 	# verifica o tempo de resposta da função soma2
 	ini_func2 = time.time()
-	soma2(1, 1000000)
+	func2(1, 1000000)
 	fim_func2 = time.time()
 	print "Função 2: ", fim_func2-ini_func2
 
