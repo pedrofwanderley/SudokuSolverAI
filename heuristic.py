@@ -106,7 +106,8 @@ def elimination_technique(board, rows, cols, block_rows, block_cols):
 	empty_positions_list = empty_positions(board,rows, cols)
 	heuristic_values = sortList(empty_positions_list)
 	count = 0
-	while(helpers.check_solution(board, rows, cols) == False):
+	#while(helpers.check_solution(board, rows, cols) == False):
+	while(len(heuristic_values) > 0):
 		if count > 20 :
 			break
 		else:
