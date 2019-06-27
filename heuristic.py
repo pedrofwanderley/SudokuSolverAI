@@ -52,7 +52,7 @@ def eliminate_peer(board, rows, cols, empty_positions_list):
 	#Eliminates possibles elements by rows
 	valuesof = []
 	valuesof2 = []
-	valuesof = sortList(empty_positions_list)
+	valuesof = sortList(empty_positions_list, board)
 
 	for position in valuesof:
 		row_missing = position[0]
@@ -62,7 +62,7 @@ def eliminate_peer(board, rows, cols, empty_positions_list):
 
 
 	updated_empty_positions_list = empty_positions(board, rows, cols)
-	valuesof2 = sortList(updated_empty_positions_list)
+	valuesof2 = sortList(updated_empty_positions_list, board)
 	#Eliminates possibles elements by columns
 	for position in valuesof2:
 		col_missing = position[1]
@@ -102,30 +102,30 @@ def update_all_missing_elements(board, block_rows, block_cols):
 
 # Makes a loop to eliminate all the redundant elements in the grid
 def elimination_technique(board, rows, cols, block_rows, block_cols):
-	heuristic_values = []
-	empty_positions_list = empty_positions(board,rows, cols)
-	heuristic_values = sortList(empty_positions_list)
+	empty_positions_list =sortList(empty_positions(board,rows,cols), board)
 	count = 0
 	#while(helpers.check_solution(board, rows, cols) == False):
-	while(len(heuristic_values) > 0):
+	while(len(empty_positions_list) > 0):
 		if count > 20 :
 			break
 		else:
-			board_updated = eliminate_peer(board,rows,cols,heuristic_values)
+			board_updated = eliminate_peer(board,rows,cols,empty_positions_list)
 			update_all_missing_elements(board_updated, block_rows, block_cols)
-			empty_positions_list = empty_positions(board_updated,rows, cols)
-			heuristic_values = sortList(empty_positions_list)
+			empty_positions_list = sortList(empty_positions(board_updated,rows, cols), board)
+
 			count += 1
 
+
+	print('=====>> After Heuristic Technique <<=====\n')
 	return board_updated
 
 
-def sortList(lista):
+def sortList(lista, grid):
 	values = []
 	valuesof = []
-	empty_positions_list = empty_positions(board,rows, cols)
+	empty_positions_list = lista
 	for p in empty_positions_list:
-		values.append(p + " " + board[p])
+		values.append(p + " " + grid[p])
 		values.sort(key=lambda x:int(x.split()[-1]))
 	for v in values:
 		valuesof.append(v[0:2])
