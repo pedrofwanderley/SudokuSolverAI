@@ -1,29 +1,41 @@
+import grids
 import helpers
 import elimination
 import only_choice
-import grids
+import heuristic
 import time
 
-def prepare_board(boards_string, rows, cols, elements_string):
+def prepare_board(boards_string, rows, cols, elements_string, grid):
 	board = helpers.create_dict_representation(boards_string, rows, cols)
 	helpers.fill_all_dot_cells(board,rows, cols, elements_string)
-
+	print('=====>> Board With all The Possibilities <<=====\n')
+	helpers.print_board(board, rows, cols, grid)
 	return board
 
-def general_solution_flow(board, rows, cols, block_rows, block_cols):
-	count = 0
-	while (helpers.check_solution(board, rows, cols, block_rows, block_cols) == False and count < 100):
+# Fluxo genérico para resolução dos grids, iniciando pela eliminação seguida da only_choice. 
+# A heuristica é chamanda apenas quando as primeiras técnica não encontram uma solução.
+def general_solution_flow(board, rows, cols, block_rows, block_cols, grid):
+	count_general_loops = 0
+	count_to_heuristic_loops = 0
+	while (helpers.check_solution(board, rows, cols, block_rows, block_cols) == False and count_general_loops < 100):
 		board = elimination.elimination_technique(board, rows, cols, block_rows, block_cols)
-		print(helpers.board_to_string(board, rows, cols))
+		helpers.print_board(board, rows, cols, grid)
 		if (helpers.check_solution(board, rows, cols, block_rows, block_cols)):
 			return True
 
 		board = only_choice.all_only_choices(board, block_rows, block_cols)
-		print(helpers.board_to_string(board, rows, cols))
+		helpers.print_board(board, rows, cols, grid)
 		if (helpers.check_solution(board, rows, cols, block_rows, block_cols)):
 			return True
 
-		count += 1
+		count_to_heuristic_loops += 1
+		if(count_to_heuristic_loops > 10):
+			board = heuristic.heuristic_technique(board, rows, cols, block_rows, block_cols)
+			helpers.print_board(board, rows, cols, grid)
+			if (helpers.check_solution(board, rows, cols, block_rows, block_cols)):
+				return True
+
+		count_general_loops += 1
 
 	return False
 			
@@ -37,9 +49,9 @@ def resolution_9x9(boards_string):
 	block_cols = block_rows
 	elements_string = '123456789'
 
-	board = prepare_board(boards_string, rows, cols, elements_string)
+	board = prepare_board(boards_string, rows, cols, elements_string, 9)
 
-	flag = general_solution_flow(board, rows, cols, block_rows, block_cols)
+	flag = general_solution_flow(board, rows, cols, block_rows, block_cols, 9)
 	if (flag) :
 		print('=====>> The Grid Was Solved With Sucess <<=====\n')
 	else:
@@ -56,17 +68,15 @@ def resolution_16x16(boards_string):
 	block_cols = block_rows
 	elements_string = '123456789ABCDEFG'
 	
-	board = prepare_board(boards_string, rows, cols, elements_string)
+	board = prepare_board(boards_string, rows, cols, elements_string, 16)
 	
-	flag = general_solution_flow(board, rows, cols, block_rows, block_cols)
+	flag = general_solution_flow(board, rows, cols, block_rows, block_cols,16)
 	if (flag) :
 		print('=====>> The Grid Was Solved With Sucess <<=====\n')
 	else:
 		print('=====>> The Time To Find a Solution is Over <<=====\n')
 	
 	return helpers.check_solution(board, rows, cols, block_rows, block_cols)
-
-
 
 
 def compareSolutionsTimes(func1, func2):
@@ -82,9 +92,17 @@ def compareSolutionsTimes(func1, func2):
 	fim_func2 = time.time()
 	print("Função 2: ", fim_func2-ini_func2)
 
+# ===== >> Grids 9x9 << =====
+#resolution_9x9(grids.board_se_01_9x9)
+#resolution_9x9(grids.board_e_01_9x9)
+#resolution_9x9(grids.board_m_01_9x9)
+#resolution_9x9(grids.board_h_02_9x9)
 
-resolution_9x9(grids.board_se_01_9x9)
-resolution_9x9(grids.board_e_01_9x9)
-resolution_9x9(grids.board_m_01_9x9)
+# ===== >> Grids 16x16 << =====
 #resolution_16x16(grids.board_m_01_16x16)
+
+# ===== >> Grids Samurai << =====
+#resolution_9x9(grids.board_01_samurai)
+
+
 

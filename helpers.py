@@ -30,9 +30,9 @@ def board_string_vizualization(board_string):
 
 	return string
 
-# Creates a string representation from a MAP to a STRING with rows and columns for the board
-def board_to_string(board, rows, cols):
-	string = '------|-------|--------\n'
+# Creates a string representation for a 9x9 grid, from a MAP to a STRING with rows and columns for the board
+def board_to_string_9x9(board, rows, cols):
+	string = '------|-------|-------\n'
 	positions = [r+c for r in rows for c in cols]
 	count = 0
 	count2 = 0
@@ -47,8 +47,37 @@ def board_to_string(board, rows, cols):
 			count = 0
 			count2 += 1
 			if (count2 % 3 == 0):
-				string += "------|-------|--------\n"
+				string += '------|-------|-------\n'
+		
 	return string
+
+# Creates a string representation for a 16x16 grid, from a MAP to a STRING with rows and columns for the board
+def board_to_string_16x16(board, rows, cols):
+	string = '--------|--------|--------|--------\n'
+	positions = [r+c for r in rows for c in cols]
+	count = 0
+	count2 = 0
+	for position in positions:
+		count += 1
+		if (count % 4 != 0):
+			string += board[position] + ' '
+		else:
+			string += board[position] + " | "
+		if (count == 16) :
+			string += '\n'
+			count = 0
+			count2 += 1
+			if (count2 % 4 == 0):
+				string += '--------|--------|--------|--------\n'
+		
+	return string
+
+# Print the string of a board using the function maded for the choosed grid
+def print_board(board, rows, cols, grid):
+		if(grid == 9):
+			print(board_to_string_9x9(board, rows, cols))
+		else:
+			print(board_to_string_16x16(board, rows, cols))
 
 #  ============================= >> Technical Helpers Functions << ==============================
 

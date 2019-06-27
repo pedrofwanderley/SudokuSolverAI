@@ -2,14 +2,6 @@
 
 import helpers
 
-# Helper function - fills all the cells that are with dot for the possibles elements left in the block
-def fill_all_dot_cells(board, rows, cols, elements_string):
-	positions = [r+c for r in rows for c in cols]
-	for position in positions:
-		if board[position] == '.':
-			board[position] = elements_string
-
-
 # Helper function - Make an array with the missing elements positions
 def empty_positions(board, rows, cols):
 	positions = [r+c for r in rows for c in cols]
@@ -52,7 +44,7 @@ def eliminate_peer(board, rows, cols, empty_positions_list):
 	#Eliminates possibles elements by rows
 	valuesof = []
 	valuesof2 = []
-	valuesof = sortList(empty_positions_list)
+	valuesof = sortList(rows, cols, board, empty_positions_list)
 
 	for position in valuesof:
 		row_missing = position[0]
@@ -62,7 +54,7 @@ def eliminate_peer(board, rows, cols, empty_positions_list):
 
 
 	updated_empty_positions_list = empty_positions(board, rows, cols)
-	valuesof2 = sortList(updated_empty_positions_list)
+	valuesof2 = sortList(rows, cols, board, updated_empty_positions_list)
 	#Eliminates possibles elements by columns
 	for position in valuesof2:
 		col_missing = position[1]
@@ -99,28 +91,7 @@ def update_all_missing_elements(board, block_rows, block_cols):
 		for c in block_cols:
 			update_missing_elements_block(board,r,c)
 
-
-# Makes a loop to eliminate all the redundant elements in the grid
-def elimination_technique(board, rows, cols, block_rows, block_cols):
-	heuristic_values = []
-	empty_positions_list = empty_positions(board,rows, cols)
-	heuristic_values = sortList(empty_positions_list)
-	count = 0
-	#while(helpers.check_solution(board, rows, cols) == False):
-	while(len(heuristic_values) > 0):
-		if count > 20 :
-			break
-		else:
-			board_updated = eliminate_peer(board,rows,cols,heuristic_values)
-			update_all_missing_elements(board_updated, block_rows, block_cols)
-			empty_positions_list = empty_positions(board_updated,rows, cols)
-			heuristic_values = sortList(empty_positions_list)
-			count += 1
-
-	return board_updated
-
-
-def sortList(lista):
+def sortList(rows, cols, board, lista):
 	values = []
 	valuesof = []
 	empty_positions_list = empty_positions(board,rows, cols)
@@ -171,23 +142,22 @@ def menosPossibilidades(board, rows, cols):
 
 	return menor
 
-
-# Creates a string representation with rows and columns for the board
-def board_to_string(board, rows, cols):
-	string = '------|-------|--------\n'
-	positions = [r+c for r in rows for c in cols]
+# Makes a loop to eliminate all the redundant elements in the grid
+def heuristic_technique(board, rows, cols, block_rows, block_cols):
+	heuristic_values = []
+	empty_positions_list = empty_positions(board,rows, cols)
+	heuristic_values = sortList(rows, cols, board, empty_positions_list)
 	count = 0
-	count2 = 0
-	for position in positions:
-		count += 1
-		if (count % 3 != 0):
-			string += board[position] + ' '
+	#while(helpers.check_solution(board, rows, cols) == False):
+	while(len(heuristic_values) > 0):
+		if count > 20 :
+			break
 		else:
-			string += board[position] + " | "
-		if (count == 9) :
-			string += '\n'
-			count = 0
-			count2 += 1
-			if (count2 % 3 == 0):
-				string += "------|-------|--------\n"
-	return string
+			board_updated = eliminate_peer(board,rows,cols,heuristic_values)
+			update_all_missing_elements(board_updated, block_rows, block_cols)
+			empty_positions_list = empty_positions(board_updated,rows, cols)
+			heuristic_values = sortList(rows, cols, board, empty_positions_list)
+			count += 1
+
+	print('=====>> After Heuristic Technique <<=====\n')
+	return board_updated
