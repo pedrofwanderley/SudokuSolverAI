@@ -2,14 +2,6 @@
 
 import helpers
 
-# Helper function - fills all the cells that are with dot for the possibles elements left in the block
-def fill_all_dot_cells(board, rows, cols, elements_string):
-	positions = [r+c for r in rows for c in cols]
-	for position in positions:
-		if board[position] == '.':
-			board[position] = elements_string
-
-
 # Helper function - Make an array with the missing elements positions
 def empty_positions(board, rows, cols):
 	positions = [r+c for r in rows for c in cols]
@@ -98,7 +90,7 @@ def update_all_missing_elements(board, block_rows, block_cols):
 def elimination_technique(board, rows, cols, block_rows, block_cols):
 	empty_positions_list = empty_positions(board,rows, cols)
 	count = 0
-	while(helpers.check_solution(board, rows, cols) == False):
+	while(helpers.check_solution(board, rows, cols, block_rows, block_cols) == False):
 		if count > 20 :
 			break
 		else:
@@ -107,5 +99,6 @@ def elimination_technique(board, rows, cols, block_rows, block_cols):
 			empty_positions_list = empty_positions(board_updated,rows, cols)
 			count += 1
 
+	print('=====>> After Elimination Technique <<=====\n')
 	return board_updated
 
