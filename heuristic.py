@@ -101,7 +101,7 @@ def update_all_missing_elements(board, block_rows, block_cols):
 
 
 # Makes a loop to eliminate all the redundant elements in the grid
-def elimination_technique(board, rows, cols, block_rows, block_cols):
+def heuristic_technique(board, rows, cols, block_rows, block_cols):
 	empty_positions_list =sortList(empty_positions(board,rows,cols), board)
 	count = 0
 	#while(helpers.check_solution(board, rows, cols) == False):

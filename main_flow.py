@@ -3,6 +3,7 @@ import helpers
 import elimination
 import only_choice
 import heuristic
+import samurai
 import time
 
 def prepare_board(boards_string, rows, cols, elements_string, grid):
@@ -78,6 +79,27 @@ def resolution_16x16(boards_string):
 	
 	return helpers.check_solution(board, rows, cols, block_rows, block_cols)
 
+def resolution_samurai(boards_list, nivel):
+	#Grid's coordinates for 9x9 boards
+	rows = 'ABCDEFGHI'
+	cols = rows
+	block_rows = ['ABC', 'DEF', 'GHI']
+	block_cols = block_rows
+	elements_string = '123456789'
+	grid = 9
+
+	boards_maps = []
+	for board in boards_list: 
+		board = prepare_board(board, rows, cols, elements_string, grid)
+		boards_maps.append(board)
+	if(nivel == 1):
+		flag = samurai.super_easy_solution_flow(boards_maps, rows, cols, block_rows, block_cols, grid)
+	if(nivel == 2):
+		flag = samurai.general_solution_flow(boards_maps, rows, cols, block_rows, block_cols, grid)
+	if flag:
+		print('=====>> The Grid Was Solved With Sucess <<=====\n')
+	else:
+		print('=====>> The Time To Find a Solution is Over <<=====\n')
 
 def compareSolutionsTimes(func1, func2):
 
@@ -92,17 +114,68 @@ def compareSolutionsTimes(func1, func2):
 	fim_func2 = time.time()
 	print("Função 2: ", fim_func2-ini_func2)
 
-# ===== >> Grids 9x9 << =====
-#resolution_9x9(grids.board_se_01_9x9)
-#resolution_9x9(grids.board_e_01_9x9)
-#resolution_9x9(grids.board_m_01_9x9)
-#resolution_9x9(grids.board_h_02_9x9)
+def menu_apresentacao():
+	while True:
+		print("============= >> Welcome to the Sudoku Solver << ============")
+		print("======== >> Select a GRID to see a resolution flow << =======")
+		print("(1) 9x9")
+		print("(2) 16x16")
+		print("(3) Samurai")
+		print("(4) Sair")
+		entrada = int(input("Insert your GRID TYPE input: "))
+		if(entrada == 4):
+			print("======== >> Bye Bye ✌  << =======")
+			break
+		if(entrada == 1):
+			menu_9x9()
+		if(entrada == 2):
+			menu_16x16()
+		if(entrada == 3):
+			menu_samurai()
 
-# ===== >> Grids 16x16 << =====
-#resolution_16x16(grids.board_m_01_16x16)
 
-# ===== >> Grids Samurai << =====
-#resolution_9x9(grids.board_01_samurai)
+def menu_9x9():
+	while True:
+		print("======= >> You choosed to see a 9x9 resolution flow << ======")
+		print("(1) Super Easy")
+		print("(2) Easy")
+		print("(3) Medium")
+		print("(4) Hard")
+		print("(5) Get Back to Home")
+		entrada = int(input("Insert your GRID TYPE input: "))
+		if(entrada == 5):
+			break
+		if(entrada == 1): resolution_9x9(grids.board_se_01_9x9)
+		if(entrada == 2): resolution_9x9(grids.board_e_01_9x9)
+		if(entrada == 3): resolution_9x9(grids.board_m_01_9x9)
+		if(entrada == 4): resolution_9x9(grids.board_h_02_9x9)
+
+def menu_16x16():
+	while True:
+		print("======= >> You choosed to see a 16x16 resolution flow << ======")
+		print("(1) Easy")
+		print("(2) Medium")
+		print("(3) Get Back to Home")
+		entrada = int(input("Insert your GRID TYPE input: "))
+		if(entrada == 3):
+			break
+		if(entrada == 1): resolution_16x16(grids.board_e_01_16x16)
+		if(entrada == 2): resolution_16x16(grids.board_m_01_16x16)
+
+def menu_samurai():
+	while True:
+		print("======= >> You choosed to see a ⊰⋋SAMURAI⋌⊱ resolution flow << ======")
+		print("(1) Easy")
+		print("(2) Medium")
+		print("(3) Get Back to Home")
+		entrada = int(input("Insert your GRID TYPE input: "))
+		if(entrada == 3):
+			break
+		if(entrada == 1): resolution_samurai(grids.board_se_01_samurai, entrada)
+		if(entrada == 2): resolution_samurai(grids.board_m_01_samurai, entrada)
+
+
+menu_apresentacao()
 
 
 
