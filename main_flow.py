@@ -4,6 +4,7 @@ import elimination
 import only_choice
 import heuristic
 import samurai
+import print_samurai
 import time
 
 def prepare_board(boards_string, rows, cols, elements_string, grid):
@@ -49,10 +50,13 @@ def resolution_9x9(boards_string):
 	block_rows = ['ABC', 'DEF', 'GHI']
 	block_cols = block_rows
 	elements_string = '123456789'
+	grid = 9
 
-	board = prepare_board(boards_string, rows, cols, elements_string, 9)
+	print(helpers.board_string_vizualization(boards_string, grid))
 
-	flag = general_solution_flow(board, rows, cols, block_rows, block_cols, 9)
+	board = prepare_board(boards_string, rows, cols, elements_string, grid)
+
+	flag = general_solution_flow(board, rows, cols, block_rows, block_cols, grid)
 	if (flag) :
 		print('=====>> The Grid Was Solved With Sucess <<=====\n')
 	else:
@@ -68,10 +72,13 @@ def resolution_16x16(boards_string):
 	block_rows = ['ABCD', 'EFGH', 'IJKL', 'MNOP']
 	block_cols = block_rows
 	elements_string = '123456789ABCDEFG'
+	grid = 16
+
+	print(helpers.board_string_vizualization(boards_string, grid))
 	
-	board = prepare_board(boards_string, rows, cols, elements_string, 16)
+	board = prepare_board(boards_string, rows, cols, elements_string, grid)
 	
-	flag = general_solution_flow(board, rows, cols, block_rows, block_cols,16)
+	flag = general_solution_flow(board, rows, cols, block_rows, block_cols,grid)
 	if (flag) :
 		print('=====>> The Grid Was Solved With Sucess <<=====\n')
 	else:
@@ -97,6 +104,7 @@ def resolution_samurai(boards_list, nivel):
 	if(nivel == 2):
 		flag = samurai.general_solution_flow(boards_maps, rows, cols, block_rows, block_cols, grid)
 	if flag:
+		print(print_samurai.print_samurai_finalizado(boards_maps))
 		print('=====>> The Grid Was Solved With Sucess <<=====\n')
 	else:
 		print('=====>> The Time To Find a Solution is Over <<=====\n')
@@ -176,6 +184,7 @@ def menu_samurai():
 
 
 menu_apresentacao()
+
 
 
 

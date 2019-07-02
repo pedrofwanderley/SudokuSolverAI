@@ -18,13 +18,13 @@ def fill_all_dot_cells(board, rows, cols, elements_string):
 #  ======================= >> Board Visualizaiton Functions (strings) << ========================
 
 # Helper function - creates visualization from the inicial string to the string representation with rows and columns
-def board_string_vizualization(board_string):
-	string = ''
+def board_string_vizualization(board_string, grid):
+	string = '\n'
 	count = 0
 	for element in board_string:
 		string += element + ' '
 		count += 1
-		if (count == 9) :
+		if (count == grid) :
 			string += '\n'
 			count = 0
 
